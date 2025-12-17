@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
   const taskInput = document.getElementById('task-input');
   const addTaskBtn = document.getElementById('add-task-btn');
@@ -51,6 +50,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
   
+  // Local storage functions - MOVED HERE
+  const saveTaskToLocalStorage = () => {
+    const tasks = Array.from(taskList.querySelectorAll('li')).map(li => ({
+      text: li.querySelector('span').textContent,
+      completed: li.querySelector('.checkbox').checked
+    }));
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  };
+  
+  const loadTasksFromLocalStorage = () => {
+    const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    savedTasks.forEach(({ text, completed }) => addTask(text, completed, false));
+    toggleEmptyState();
+    updateProgress();
+  };
+  
   const updateProgress = (shouldCheckCompletion = true) => {
     const totalTasks = taskList.children.length;
     const completedTasks = taskList.querySelectorAll('.checkbox:checked').length;
@@ -62,21 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
       progressNumbers.textContent = `${completedTasks} / ${totalTasks}`;
     }
     
-const saveTaskToLocalStorage = () => {
-  const tasks = Array.from(taskList.querySelectorAll('li')).map(li => ({
-    text: li.querySelector('span').textContent,
-    completed: li.querySelector('.checkbox').checked
-  }));
-  localStorage.setItem('tasks', JSON.stringify(tasks));
-};
-
-const loadTasksFromLocalStorage = () => {
-  const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
-  savedTasks.forEach(({ text, completed }) => addTask(text, completed, false));
-  toggleEmptyState();
-  updateProgress();
-};
-
     if(shouldCheckCompletion && totalTasks > 0 && completedTasks === totalTasks) {
       Confetti();
     }
@@ -153,8 +153,8 @@ const loadTasksFromLocalStorage = () => {
       addTask();
     }
   });
-
-    loadTasksFromLocalStorage();
+  
+  loadTasksFromLocalStorage();
   
   toggleEmptyState();
 });
