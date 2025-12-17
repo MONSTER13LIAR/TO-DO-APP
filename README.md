@@ -39,3 +39,5 @@ Original tutorial inspiration: CSSnippets on YouTube
 
 📬 Feedback
 As a beginner developer, I'm always looking to improve! Feel free to open an issue or reach out with suggestions.
+
+*Also dont forget to compelete all your tasks for a beautiful popper.
